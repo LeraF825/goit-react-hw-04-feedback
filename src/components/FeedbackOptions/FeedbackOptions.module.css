@@ -1,0 +1,15 @@
+.btn {
+    display: flex;
+    margin: 20px auto;
+    justify-content: center;
+    width: 100px;
+    padding: 5px;
+    color:black;
+    background-color: rgb(196, 159, 110);
+    border-color: bisque;
+}
+
+.btn:hover{
+    cursor: pointer;
+    box-shadow:10px 5px 5px rgb(78, 73, 73) ;
+}
