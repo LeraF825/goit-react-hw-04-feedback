@@ -1,43 +1,51 @@
-import { Component } from 'react';
+import {  useState } from 'react';
 import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
 import { Section } from './Section/Section';
 import { Statistics } from './Statistics/Statistics';
 import s from './App.module.css';
 
-export class App extends Component {
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
+
+export const App = () => {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+
+  const onLeaveFeedback = event => {
+    const key = event.target.name;
+    switch (key) {
+      case 'good':
+        setGood(good + 1);
+        break;
+      case 'neutral':
+        setNeutral(prevValue => prevValue + 1);
+        break;
+      case 'bad':
+        setBad(prevValue => prevValue + 1);
+        break;
+      default:
+        break;
+    }
   };
 
-  onLeaveFeedback = e => {
-    this.setState(prevState => ({
-      [e]: (prevState[e] += 1),
-    }));
-  };
-
-  countTotalFeedback = () => {
-    const { good, neutral, bad } = this.state;
+  const countTotalFeedback = () => {
     return good + neutral + bad;
   };
 
-  countPositiveFeedbackPercentage = () => {
-    return Math.round((this.state.good * 100) / this.countTotalFeedback());
+  const countPositiveFeedbackPercentage = () => {
+    return Math.round((good * 100) / countTotalFeedback());
   };
 
-  render() {
-    const { good, neutral, bad } = this.state;
-    const options = Object.keys(this.state);
-    const totalStats = this.countTotalFeedback();
-    const positiveStats = this.countPositiveFeedbackPercentage();
+  const options = ['good', 'bad', 'neutral'];
+  const totalStats = countTotalFeedback();
+  const positiveStats = countPositiveFeedbackPercentage();
+
 
     return (
       <div className={s.box}>
         <Section title="Please leave feedback">
           <FeedbackOptions
             options={options}
-            onLeaveFeedback={this.onLeaveFeedback}
+            onLeaveFeedback={onLeaveFeedback}
           />
         </Section>
 
@@ -53,4 +61,3 @@ export class App extends Component {
       </div>
     );
   }
-}
